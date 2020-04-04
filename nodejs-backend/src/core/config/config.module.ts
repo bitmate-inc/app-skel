@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule as NestConfigModule } from '@nestjs/config';
 import http from 'src/config/http';
+import debug from '../../config/debug';
 
 const configuration = [
-  http,
+  http, debug,
 ];
 
 const modules = [

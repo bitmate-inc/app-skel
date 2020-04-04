@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from './type-orm/type.orm.module';
+import { ConfigModule } from './config/config.module';
+import { DebugModule } from './debug/debug.module';
 
 const modules = [
-  ConfigModule.forRoot({
-    load: [],
-  }),
+  ConfigModule,
+  TypeOrmModule,
+  DebugModule,
 ];
 
 @Module({
