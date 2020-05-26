@@ -12,7 +12,7 @@ const providers: Provider[] = [
 		provide: TemplateEngineConfig,
 		useFactory: () => {
 			return plainToClass(TemplateEngineConfig, {
-				templatesDir: join(appRoot.toString(), 'src', 'template'),
+				templatesDir: join(appRoot.toString(), 'template'),
 			});
 		},
 	},
