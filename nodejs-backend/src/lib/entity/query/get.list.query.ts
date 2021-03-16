@@ -1,8 +1,8 @@
-import {PaginationDto} from './dto/pagination.dto';
+import { IncludeDto, OrderByDto, PaginationDto } from './query.dto';
 
 export class GetListQueryData {
-	orderBy?: { [propertyPath: string]: 'asc' | 'desc' };
+	orderBy?: OrderByDto;
 	pagination?: PaginationDto;
-	include?: { [propertyPath: string]: 'asc' | 'desc' };
+	include?: IncludeDto;
 	withDeleted?: boolean;
 }

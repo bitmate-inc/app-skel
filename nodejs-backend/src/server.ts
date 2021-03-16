@@ -1,31 +1,58 @@
-import {ClassSerializerInterceptor, UnprocessableEntityException, ValidationPipe} from '@nestjs/common';
-import {ConfigService} from '@nestjs/config';
-import {NestFactory, Reflector} from '@nestjs/core';
-import {NestExpressApplication} from '@nestjs/platform-express';
-import {json} from 'express';
-import {CONFIG_TOKEN} from './config/http';
-import {ValidationResult} from './lib/validator/model/validation.result';
-import {WwwModule} from './www/www.module';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { ExpressAdapter, NestExpressApplication } from '@nestjs/platform-express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as express from 'express';
+import { json } from 'express';
+import { WwwModule } from './app/www/www.module';
+import { CONFIG_TOKEN } from './config/http';
+import { parseBoolean } from './lib/config/parse.env';
 
 async function bootstrap() {
-	const app = await NestFactory.create<NestExpressApplication>(WwwModule);
+	/*
+	 * App creation
+	 */
+	const server = express();
+
+	const app = await NestFactory.create<NestExpressApplication>(
+		WwwModule,
+		new ExpressAdapter(server),
+	);
+
 	const options = app.get(ConfigService).get(CONFIG_TOKEN);
 
+	/*
+	 * Http setup
+	 */
 	app.enableCors(options.cors);
-	app.use(json({limit: '50mb'}));
+	app.use(json({ limit: '50mb' }));
 	app.set('trust proxy', options.server.trustProxy);
 
-	const reflector = app.get(Reflector);
-	app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
+	/*
+	 * Swagger setup
+	 */
+	const swaggerOptions = new DocumentBuilder()
+		.setTitle('CountMe Cloud')
+		.setDescription('The CountMe Cloud API description')
+		.setVersion('1.0')
+		.addBearerAuth({
+			type: 'http',
+			scheme: 'bearer',
+			bearerFormat: 'JWT',
+		})
+		.build();
 
-	app.useGlobalPipes(new ValidationPipe({
-		transform: true,
-		whitelist: true,
-		exceptionFactory: errorList => new UnprocessableEntityException(
-			ValidationResult.createFromErrorList(errorList),
-		),
-	}));
+	const swaggerDocument = SwaggerModule.createDocument(app, swaggerOptions);
 
+	SwaggerModule.setup('api/doc', app, swaggerDocument, {
+		swaggerOptions: {
+			persistAuthorization: parseBoolean(process.env.SWAGGER_PERSIST_AUTHORIZATION, false),
+		},
+	});
+
+	/*
+	 * App init
+	 */
 	await app.listen(options.server.port);
 }
 

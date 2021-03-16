@@ -1,5 +1,7 @@
+import { IncludeDto, OrderByDto } from './query.dto';
+
 export class GetOneQueryData {
-	orderBy?: { [propertyPath: string]: 'asc' | 'desc' };
-	include?: { [propertyPath: string]: 'asc' | 'desc' };
+	orderBy?: OrderByDto;
+	include?: IncludeDto;
 	withDeleted?: boolean;
 }

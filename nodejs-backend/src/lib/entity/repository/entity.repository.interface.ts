@@ -1,15 +1,29 @@
 export interface FindOneQuery {
 	id?: string;
+
+	[property: string]: any | any[];
 }
 
 export interface FindListQuery {
-	idList?: string[];
+	id?: string[];
+
+	[property: string]: any | any[];
+}
+
+export interface FindBulkQuery extends FindListQuery {
+	selectAll?: boolean;
+}
+
+export interface FindOptions {
+	relations?: string[];
+	skip?: number;
+	take?: number;
 }
 
 export interface EntityRepositoryInterface<Entity> {
-	findOneBy(query: FindOneQuery): Promise<Entity | undefined>;
+	findOneBy(query: FindOneQuery, options?: FindOptions): Promise<Entity | undefined>;
 
-	findBy(query: FindListQuery): Promise<Entity[]>;
+	findBy(query: FindListQuery, options?: FindOptions): Promise<Entity[]>;
 
 	save(entity: Entity): Promise<Entity>;
 

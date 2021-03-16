@@ -1,43 +1,54 @@
 ## Description
 
-This project was bootstrapped with [NestJS](https://nestjs.com/) A progressive <a href="http://nodejs.org" target="blank">Node.js</a>
- framework for building efficient and scalable server-side applications.
+This project was bootstrapped with [NestJS](https://nestjs.com/) A
+progressive <a href="http://nodejs.org" target="blank">Node.js</a>
+framework for building efficient and scalable server-side applications.
 
+## Install Packages
 
-## Installation
-
-##### Install Packages
- 
 ```bash
 yarn install
 ```
 
-##### Set up environment
-Copy `.env.example` file to `.env` and fill in the values.
+## SMTP Server
 
-For development set `TYPEORM_SYNCHRONIZE=true`.
+Setup a SMTP server of your choice, like Sendgrid.
 
-## Database
-
-PostgreSQL database is used. 
+## PostgreSQL
 
 Setting up database for development:
 
 ```postgresql
 --- create user
-CREATE USER project WITH LOGIN;
-ALTER ROLE project with password 'password';
+CREATE USER countme_cloud WITH LOGIN;
+ALTER ROLE countme_cloud with password 'password';
 
 --- create database
-CREATE DATABASE project WITH OWNER project;
+CREATE DATABASE countme_cloud WITH OWNER countme_cloud;
 
 --- use the new database:
-\c project;
+\c countme_cloud;
 --- enable uuid extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 ```
 
-#### ORM
+## Environment
+
+Base environment variables are set in `.env` file. This file is committed to repository and should **NOT** be changed
+locally.
+
+Overriding values of environment variables **MUST** be done in `.env.local` file!
+
+If necessary, set database user, pw, database, etc in corresponding `TYPEORM_` vars. For development
+set `TYPEORM_SYNCHRONIZE=true`, it will do database synchronisation with the model on app startup.
+
+Set `AUTH_UPDATE_PASSWORD_URL` to `<frontend_base_url>/auth/update-password/:token`. This is the URL that will be put to
+password reset email. Default is `http://localhost:3000/auth/update-password/:token`.
+
+Set `AUTH_CONFIRM_EMAIL_URL` to `<frontend_base_url>/auth/confirm-email/:token`. This is the URL that will be put to
+password reset email. Default is `http://localhost:3000/auth/confirm-email/:token`.
+
+## ORM
 
 [TypeORM](https://typeorm.io/#/) is used as ORM tool.
 
@@ -51,8 +62,7 @@ yarn run typeorm <command> [params, ...]
 
 More info about CLI tool can be found in [TypeORM CLI docs](https://typeorm.io/#/using-cli).
 
-
-#### Fixtures
+## Fixtures
 
 To load fixtures execute:
 
@@ -60,6 +70,11 @@ To load fixtures execute:
 yarn run fixtures:load
 ```
 
+To load production fixtures execute:
+
+```bash
+yarn run fixtures:load:prod
+```
 
 ## Running the app
 
@@ -89,8 +104,23 @@ $ yarn run start:prod
 $ yarn run test
 
 # e2e tests
-$ yarn run test:e2e
+$ yarn run test:e2e:prepare     // prepare db for tests
+$ yarn run test:e2e             // run tests
 
 # test coverage
 $ yarn run test:cov
+```
+
+## CLI
+
+See available CLI commands:
+
+```bash
+$ yarn run cli -h
+```
+
+For yarn run scripts check `"scripts"` part of [package.json](./package.json) or run:
+
+```bash
+$ yarn run
 ```

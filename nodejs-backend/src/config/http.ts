@@ -1,5 +1,5 @@
-import {registerAs} from '@nestjs/config';
-import {parseBoolean} from '../lib/config/parse.env';
+import { registerAs } from '@nestjs/config';
+import { parseBoolean } from '../lib/config/parse.env';
 
 export const CONFIG_TOKEN = 'http';
 
@@ -15,6 +15,9 @@ export default registerAs(CONFIG_TOKEN, () => {
 		server: {
 			port: process.env.PORT || 8000,
 			trustProxy: parseBoolean(process.env.TRUST_PROXY),
+		},
+		routing: {
+			baseUrl: process.env.ROUTER_BASE_URL,
 		},
 	};
 });

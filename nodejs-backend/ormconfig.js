@@ -1,3 +1,5 @@
+const path = require('path');
+
 // noinspection JSConstantReassignment
 module.exports = {
 	/*
@@ -10,6 +12,7 @@ module.exports = {
 	'database': process.env.TYPEORM_DATABASE || 'project',
 	'synchronize': (process.env.TYPEORM_SYNCHRONIZE === 'true') || false,
 	'logging': (process.env.TYPEORM_LOGGING === 'true') || false,
+	'keepConnectionAlive': true,
 
 	/*
 	 * Fixed
@@ -17,6 +20,12 @@ module.exports = {
 	'name': 'default',
 	'type': 'postgres',
 	'entities': [
-		__dirname + '/dist/**/*.entity.js',
+		path.join(__dirname, 'src', '**', '*.entity.ts'),
 	],
+	'migrations': [
+		path.join(__dirname, 'src', 'core', 'type-orm', 'migration', '*.ts'),
+	],
+	'cli': {
+		'migrationsDir': path.join('src', 'core', 'type-orm', 'migration'),
+	},
 };
