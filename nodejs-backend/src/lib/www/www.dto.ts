@@ -1,5 +1,7 @@
-import { plainToClass, Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { plainToClass, Transform, Type } from 'class-transformer';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
+import { GetListQueryData } from '../entity/query/get.list.query';
 import { PaginationDto } from '../entity/query/query.dto';
 
 export class GetListRequestQueryParamsDto {
@@ -18,6 +20,26 @@ export class GetListRequestQueryParamsDto {
 	@IsString()
 	q?: string;
 
+	@ApiProperty({ type: [String], required: false })
+	@IsOptional()
+	@IsArray()
+	@IsString({ each: true })
+	@Transform(
+		({ value }) => typeof value === 'string' ?
+			value.split(',').map(v => v.trim()).filter(v => v.length > 0) :
+			value,
+	)
+	id?: string[];
+
+	toListQueryData(): GetListQueryData {
+		const filterBy = { q: this.q, id: this.id };
+		const pagination = this.pagination;
+
+		return plainToClass(GetListQueryData, {
+			filterBy,
+			pagination,
+		} as GetListQueryData);
+	}
 
 	get pagination() {
 		if (!this.limit && !this.offset) {

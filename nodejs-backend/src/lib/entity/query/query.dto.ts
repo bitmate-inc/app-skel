@@ -10,3 +10,10 @@ export class OrderByDto {
 export class IncludeDto {
 	[propertyPath: string]: boolean | IncludeDto;
 }
+
+export class FilterByDto {
+	id?: string[];
+	q?: string;
+
+	[propertyPath: string]: any;
+}
