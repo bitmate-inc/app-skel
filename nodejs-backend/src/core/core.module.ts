@@ -8,6 +8,7 @@ import { RoutingModule } from './infrastructure/routing/routing.module';
 import { TemplateModule } from './infrastructure/template/template.module';
 import { TypeOrmModule } from './infrastructure/type-orm/type.orm.module';
 import { UserModule } from './domain/user/user.module';
+import { ValidationModule } from './infrastructure/validation/validation.module';
 
 const modules = [
 	/*
@@ -20,10 +21,11 @@ const modules = [
 	TemplateModule,
 	RoutingModule,
 	MinioModule,
+	ValidationModule,
+	AuthModule,
 	/*
 	 * Domain
 	 */
-	AuthModule,
 	UserModule,
 ];
 
