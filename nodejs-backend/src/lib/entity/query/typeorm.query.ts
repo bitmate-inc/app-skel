@@ -17,7 +17,7 @@ export function addOrderBy<Entity>(
 	if (!!orderBy) {
 		for (const property of Object.keys(orderBy)) {
 			const direction = orderBy[property];
-			qb.addOrderBy(property, direction as ('ASC' | 'DESC'));
+			qb.addOrderBy(property, direction.toUpperCase() as ('ASC' | 'DESC'));
 		}
 	} else if (!!defaultSort) {
 		qb.addOrderBy(defaultSort, defaultOrder);
