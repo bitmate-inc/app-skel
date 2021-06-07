@@ -32,8 +32,8 @@ async function bootstrap() {
 	 * Swagger setup
 	 */
 	const swaggerOptions = new DocumentBuilder()
-		.setTitle('CountMe Cloud')
-		.setDescription('The CountMe Cloud API description')
+		.setTitle('Project API')
+		.setDescription('The Project API description')
 		.setVersion('1.0')
 		.addBearerAuth({
 			type: 'http',
