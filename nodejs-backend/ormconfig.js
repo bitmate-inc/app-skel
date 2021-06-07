@@ -13,6 +13,12 @@ module.exports = {
 	'synchronize': (process.env.TYPEORM_SYNCHRONIZE === 'true') || false,
 	'logging': (process.env.TYPEORM_LOGGING === 'true') || false,
 	'keepConnectionAlive': true,
+	'ssl': process.env.TYPEORM_SSL === 'true' || false,
+	'extra': {
+		'ssl': process.env.TYPEORM_SSL === 'true' ? {
+			'rejectUnauthorized': process.env.TYPEORM_EXTRA_SSL,
+		} : undefined,
+	},
 
 	/*
 	 * Fixed

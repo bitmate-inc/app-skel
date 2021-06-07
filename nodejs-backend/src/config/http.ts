@@ -19,5 +19,8 @@ export default registerAs(CONFIG_TOKEN, () => {
 		routing: {
 			baseUrl: process.env.ROUTER_BASE_URL,
 		},
+		cache: {
+			ttl: process.env.HTTP_CACHE_TTL || 300,
+		}
 	};
 });
