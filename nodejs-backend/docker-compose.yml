@@ -8,11 +8,12 @@ services:
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=dirtyold
-      - POSTGRES_PASSWORD=dirtyold
-      - POSTGRES_DB=dirtyold
+      - POSTGRES_USER=project
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=project
     volumes:
       - postgres:/var/lib/postgresql/data
+      - ./.docker/postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
 
   adminer:
     image: adminer:4.7.7
@@ -34,6 +35,19 @@ services:
       MINIO_ACCESS_KEY: accessKey
       MINIO_SECRET_KEY: secretKey
     command: server /data
+
+  mc:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >   # this will re-create all buckets deleting all previous existing data
+      /bin/sh -c "
+      /usr/bin/mc config host rm myminio;
+      /usr/bin/mc config host add myminio http://minio:9000 accessKey secretKey;
+      /usr/bin/mc rb --force myminio/bucket;
+      /usr/bin/mc mb myminio/bucket;
+      exit 0;
+      "
 
 volumes:
   postgres:
