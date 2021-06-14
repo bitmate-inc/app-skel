@@ -9,7 +9,7 @@
 		"prebuild": "rimraf dist",
 		"build": "nest build",
 		"cli": "ts-node -r tsconfig-paths/register ./src/cli.ts",
-		"fixtures:load": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-dev/",
+		"fixtures:load:dev": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-dev/",
 		"fixtures:load:test": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-test/",
 		"fixtures:load:prod": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-prod/",
 		"fixtures:reset": "yarn run typeorm:db:reset && yarn run fixtures:load",
