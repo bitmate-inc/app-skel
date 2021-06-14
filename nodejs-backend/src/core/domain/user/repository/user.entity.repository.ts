@@ -1,6 +1,6 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { FindOneQuery } from '../../../../lib/entity/repository/entity.repository.interface';
+import { Raw, Repository } from 'typeorm';
+import { FindOneQuery, FindOptions } from '../../../../lib/entity/repository/entity.repository.interface';
 import { TypeOrmEntityRepository } from '../../../../lib/entity/repository/type.orm.entity.repository';
 import { User } from '../model/user.entity';
 
@@ -17,20 +17,14 @@ export class UserEntityRepository extends TypeOrmEntityRepository<User> {
 		super();
 	}
 
-	async findOneBy(query: FindOneUserQuery): Promise<User | undefined> {
-		const qb = this.repository.createQueryBuilder('user');
+	async findOneBy(query: FindOneUserQuery, options?: FindOptions): Promise<User | undefined> {
+		const innerQuery: FindOneQuery = { ...query };
 
-		if (!!query.id) {
-			qb.andWhere('user.id = :id', { id: query.id });
-		}
-		if (!!query.email) {
-			qb.andWhere('LOWER(user.email) = :email', { email: query.email.toLowerCase() });
-		}
-		if (!!query.passwordResetToken) {
-			qb.andWhere('user.passwordResetToken = :passwordResetToken', { passwordResetToken: query.passwordResetToken });
+		if ('email' in query) {
+			innerQuery.email = Raw(alias => `LOWER(${alias}) = ':email'`, { email: query.email.toLowerCase() });
 		}
 
-		return qb.getOne();
+		return super.findOneBy(query, options);
 	}
 
 	async findOneForAuth(query: { email: string } | { id: string }): Promise<User | undefined> {
