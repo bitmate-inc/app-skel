@@ -25,6 +25,12 @@ export interface EntityRepositoryInterface<Entity> {
 
 	findBy(query: FindListQuery, options?: FindOptions): Promise<Entity[]>;
 
+	findByAndCount(query: FindListQuery, options?: FindOptions): Promise<[Entity[], number]>;
+
+	findBulkBy(query: FindBulkQuery, options?: FindOptions): Promise<Entity[]>;
+
+	findBulkByAndCount(query: FindBulkQuery, options?: FindOptions): Promise<[Entity[], number]>;
+
 	save(entity: Entity): Promise<Entity>;
 
 	saveBatch(entityList: Entity[]): Promise<Entity[]>;
