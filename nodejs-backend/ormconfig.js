@@ -29,9 +29,9 @@ module.exports = {
 		path.join(__dirname, 'src', '**', '*.entity.ts'),
 	],
 	'migrations': [
-		path.join(__dirname, 'src', 'core', 'type-orm', 'migration', '*.ts'),
+		path.join(__dirname, 'src', 'migration', '*.ts'),
 	],
 	'cli': {
-		'migrationsDir': path.join('src', 'core', 'type-orm', 'migration'),
+		'migrationsDir': path.join('src', 'migration'),
 	},
 };
