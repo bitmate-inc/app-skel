@@ -15,7 +15,7 @@ export class Validator {
 		},
 	};
 
-	async validate(object: object, validatorOptions?: ValidatorOptions): Promise<ValidationResult | undefined> {
+	async validate(object: Record<string, unknown>, validatorOptions?: ValidatorOptions): Promise<ValidationResult | undefined> {
 		validatorOptions = { ...this.validatorOptions, ...(validatorOptions || {}) };
 
 		const errorList = await validate(object, validatorOptions);
