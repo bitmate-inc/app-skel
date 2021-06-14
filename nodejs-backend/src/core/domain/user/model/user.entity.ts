@@ -1,6 +1,7 @@
 import { ApiHideProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { TypeormValueTransformer } from '../../../../lib/entity/transformer/typeorm.value.transformer';
 
 @Entity()
 export class User {
@@ -40,10 +41,15 @@ export class User {
 	lastName: string;
 
 	@Column({
-		transformer: {
-			from: (value?: string) => !!value ? value.toLowerCase() : value,
-			to: (value: string) => !!value ? value.toLowerCase() : value,
-		},
+		/*
+		 * It is necessary to use TypeormValueTransformer so that FindOperator gets handled properly.
+		 * because of following BUG in TypeORM:
+		 * https://github.com/typeorm/typeorm/issues/4399
+		 */
+		transformer: new TypeormValueTransformer({
+			from: (value?: string) => value?.toLowerCase(),
+			to: (value?: string) => value?.toLowerCase(),
+		}),
 		unique: true,
 	})
 	email: string;
