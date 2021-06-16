@@ -12,7 +12,6 @@
 		"fixtures:load:dev": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-dev/",
 		"fixtures:load:test": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-test/",
 		"fixtures:load:prod": "fixtures -c ormconfig.js --require ts-node/register src/core/infrastructure/fixture/data-prod/",
-		"fixtures:reset": "yarn run typeorm:db:reset && yarn run fixtures:load",
 		"start": "nest start",
 		"start:dev": "nest start --watch",
 		"start:debug": "nest start --debug --watch",
