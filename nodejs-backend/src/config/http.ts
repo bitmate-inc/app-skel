@@ -4,6 +4,8 @@ import { parseBoolean } from '../lib/config/parse.env';
 export const CONFIG_TOKEN = 'http';
 
 export default registerAs(CONFIG_TOKEN, () => {
+
+	console.log(process.env);
 	return {
 		cors: {
 			origin: true,
@@ -13,14 +15,14 @@ export default registerAs(CONFIG_TOKEN, () => {
 			credentials: true,
 		},
 		server: {
-			port: process.env.PORT || 8000,
+			port: process.env.PORT,
 			trustProxy: parseBoolean(process.env.TRUST_PROXY),
 		},
 		routing: {
 			baseUrl: process.env.ROUTER_BASE_URL,
 		},
 		cache: {
-			ttl: process.env.HTTP_CACHE_TTL || 300,
-		}
+			ttl: process.env.HTTP_CACHE_TTL,
+		},
 	};
 });
