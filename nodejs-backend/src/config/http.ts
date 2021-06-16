@@ -4,8 +4,6 @@ import { parseBoolean } from '../lib/config/parse.env';
 export const CONFIG_TOKEN = 'http';
 
 export default registerAs(CONFIG_TOKEN, () => {
-
-	console.log(process.env);
 	return {
 		cors: {
 			origin: true,
