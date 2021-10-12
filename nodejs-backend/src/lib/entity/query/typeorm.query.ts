@@ -24,9 +24,13 @@ export function addOrderBy<Entity>(
 	}
 }
 
-export function addWithDeleted<Entity>(qb: SelectQueryBuilder<Entity>, withDeleted?: boolean) {
+export function addWithDeleted<Entity>(qb: SelectQueryBuilder<Entity>, withDeleted?: boolean, alias?: string) {
+	if (typeof alias === 'undefined' || alias === null) {
+		alias = qb.alias;
+	}
+
 	if (!withDeleted) {
-		qb.andWhere(`(${notDeletedCondition(qb.alias)})`);
+		qb.andWhere(`(${notDeletedCondition(alias)})`);
 	}
 }
 
